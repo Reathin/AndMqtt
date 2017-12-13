@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rairmmd.mqttlibs" />
+    package="com.rairmmd.mqttlibs">
+
+    <application>
+        <service android:name=".android.MqttService" />
+    </application>
+</manifest>
