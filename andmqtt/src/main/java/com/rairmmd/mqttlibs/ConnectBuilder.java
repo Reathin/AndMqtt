@@ -4,18 +4,16 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.rairmmd.mqttlibs.android.MqttAndroidClient;
-import com.rairmmd.mqttlibs.android.MqttTraceHandler;
-
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.android.service.MqttTraceHandler;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
 import java.io.InputStream;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * @author Rair
@@ -26,6 +24,7 @@ import static android.content.ContentValues.TAG;
 
 public class ConnectBuilder implements IBuilder {
 
+    private static final String TAG = "AndMqtt";
     private final Context mContext;
     private String mClientId;
     private String mServer;
@@ -47,19 +46,8 @@ public class ConnectBuilder implements IBuilder {
     private MqttTraceHandler mTraceCallback;
     private static ConnectBuilder instance;
 
-    private ConnectBuilder() {
+    public ConnectBuilder() {
         mContext = MqttManager.getInstance().getContext();
-    }
-
-    public static ConnectBuilder getInstance() {
-        if (instance == null) {
-            synchronized (ConnectBuilder.class) {
-                if (instance == null) {
-                    instance = new ConnectBuilder();
-                }
-            }
-        }
-        return instance;
     }
 
     /**
@@ -132,14 +120,23 @@ public class ConnectBuilder implements IBuilder {
     }
 
     /**
-     * 设置用户名和密码
+     * 设置用户名
      *
      * @param userName 用户名
+     * @return ConnectBuilder
+     */
+    public ConnectBuilder setUserName(String userName) {
+        this.mUserName = userName;
+        return this;
+    }
+
+    /**
+     * 设置密码
+     *
      * @param password 密码
      * @return ConnectBuilder
      */
-    public ConnectBuilder setUserNameAndPassword(String userName, String password) {
-        this.mUserName = userName;
+    public ConnectBuilder setUserPassword(String password) {
         this.mUserPassword = password;
         return this;
     }
@@ -147,9 +144,9 @@ public class ConnectBuilder implements IBuilder {
     /**
      * 设置ssl
      *
-     * @param sslKeyPath     证书路径
+     * @param sslKeyPath     ssl路径
      * @param sslKeyPassword 密码
-     * @return
+     * @return ConnectBuilder
      */
     public ConnectBuilder setSsl(String sslKeyPath, String sslKeyPassword) {
         this.mSslKeyPath = sslKeyPath;
@@ -188,6 +185,16 @@ public class ConnectBuilder implements IBuilder {
     }
 
     /**
+     * 设置消息回调监听
+     *
+     * @param listener 监听
+     */
+    public ConnectBuilder setMessageListener(MqttCallbackExtended listener) {
+        this.mMessageListener = listener;
+        return this;
+    }
+
+    /**
      * 获取客户端
      *
      * @return MqttAndroidClient
@@ -198,16 +205,19 @@ public class ConnectBuilder implements IBuilder {
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
+        //拼接服务器地址
         String uri = mServer.concat(":").concat(String.valueOf(mPort));
-        MqttAndroidClient client = new MqttAndroidClient(mContext, uri, mClientId);
+        if (mClient == null) {
+            mClient = new MqttAndroidClient(mContext, uri, mClientId);
+        }
         MqttConnectOptions connectOptions = new MqttConnectOptions();
-        client.connect(connectOptions);
+        mClient.connect(connectOptions);
         if (!TextUtils.isEmpty(mSslKeyPath)) {
             try {
                 InputStream key = this.getClass().getResourceAsStream(mSslKeyPath);
-                connectOptions.setSocketFactory(client.getSSLSocketFactory(key, mSslKeyPassword));
+                connectOptions.setSocketFactory(mClient.getSSLSocketFactory(key, mSslKeyPassword));
             } catch (MqttSecurityException e) {
-                Log.e(this.getClass().getCanonicalName(), "MqttException Occured: ", e);
+                Log.e(TAG, e.getMessage());
             }
         }
         connectOptions.setCleanSession(mCleanSession);
@@ -219,26 +229,24 @@ public class ConnectBuilder implements IBuilder {
         if (!TextUtils.isEmpty(mUserPassword)) {
             connectOptions.setPassword(mUserPassword.toCharArray());
         }
-
         boolean doConnect = true;
-
         if ((!TextUtils.isEmpty(lastWillMsg)) || (!TextUtils.isEmpty(lastWillTopic))) {
             try {
                 connectOptions.setWill(lastWillTopic, lastWillMsg.getBytes(), lastWillQos, lastWillRetained);
             } catch (Exception e) {
-                Log.d("", "connect() Exception Occured：" + e.toString());
+                Log.d(TAG, e.getMessage());
                 doConnect = false;
             }
         }
-        client.setCallback(mMessageListener);
+        mClient.setCallback(mMessageListener);
         if (traceEnabled) {
-            client.setTraceCallback(mTraceCallback);
+            mClient.setTraceCallback(mTraceCallback);
         }
         if (doConnect) {
             try {
-                client.connect(connectOptions, null, listener);
+                mClient.connect(connectOptions, null, listener);
             } catch (MqttException e) {
-                Log.d(TAG, "connect() MqttException Occured:" + e.toString());
+                Log.d(TAG, e.getMessage());
             }
         }
     }

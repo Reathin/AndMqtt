@@ -2,6 +2,6 @@
     package="com.rairmmd.mqttlibs">
 
     <application>
-        <service android:name=".android.MqttService" />
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 </manifest>
