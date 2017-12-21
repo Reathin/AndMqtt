@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.rairmmd.mqttlibs.ConnectBuilder;
 import com.rairmmd.mqttlibs.MqttManager;
+import com.rairmmd.mqttlibs.PublishBuilder;
+import com.rairmmd.mqttlibs.SubscribeBuilder;
+import com.rairmmd.mqttlibs.UnSubscribeBuilder;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -51,6 +54,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                 Log.i("Rair", "(MainActivity.java:56)-onFailure:->连接失败");
+            }
+        });
+
+        //订阅
+        MqttManager.getInstance().subscribe(new SubscribeBuilder()
+                .setTopic("主题")
+                .setQos(0), new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Log.i("Rair", "(MainActivity.java:63)-onSuccess:->订阅成功");
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.i("Rair", "(MainActivity.java:68)-onFailure:->订阅失败");
+            }
+        });
+
+        //发布
+        MqttManager.getInstance().publish(new PublishBuilder()
+                .setMsg("消息")
+                .setQos(0)
+                .setTopic("主题"), new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Log.i("Rair", "(MainActivity.java:79)-onSuccess:->发布成功");
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.i("Rair", "(MainActivity.java:84)-onFailure:->发布失败");
+            }
+        });
+
+        //取消订阅
+        MqttManager.getInstance().unSubscribe(new UnSubscribeBuilder()
+                .setTopic("主题"), new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                Log.i("Rair", "(MainActivity.java:93)-onSuccess:->取消订阅成功");
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.i("Rair", "(MainActivity.java:98)-onFailure:->取消订阅失败");
             }
         });
     }
