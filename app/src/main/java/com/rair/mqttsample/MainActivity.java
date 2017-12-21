@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.rairmmd.mqttlibs.AndMqtt;
-import com.rairmmd.mqttlibs.MqttConnect;
+import com.rairmmd.andmqtt.AndMqtt;
+import com.rairmmd.andmqtt.MqttConnect;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;

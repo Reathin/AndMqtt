@@ -1,4 +1,4 @@
-package com.rairmmd.mqttlibs;
+package com.rairmmd.andmqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -10,24 +10,24 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public class MqttDisconnect implements IMqtt {
+public class MqttUnSubscribe implements IMqtt {
 
-    private long mQuiesceTimeout;
+    private String mTopic;
 
     /**
-     * 延时多久断开连接
+     * 设置主题
      *
-     * @param quiesceTimeout 时间
-     * @return MqttDisconnect
+     * @param mTopic 主题
+     * @return MqttUnSubscribe
      */
-    public MqttDisconnect setQuiesceTimeout(long quiesceTimeout) {
-        this.mQuiesceTimeout = quiesceTimeout;
+    public MqttUnSubscribe setTopic(String mTopic) {
+        this.mTopic = mTopic;
         return this;
     }
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
         AndMqtt.getInstance().getMqttConnect().getClient()
-                .disconnect(mQuiesceTimeout, null, listener);
+                .unsubscribe(mTopic, null, listener);
     }
 }

@@ -1,4 +1,4 @@
-package com.rairmmd.mqttlibs;
+package com.rairmmd.andmqtt;
 
 import android.content.Context;
 import android.text.TextUtils;
