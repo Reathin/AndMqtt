@@ -5,12 +5,12 @@ android mqttclient
 ### 1、初始化
 建议在Application中初始化，避免持有Activity导致内存泄露
 
-```java
+```
 AndMqtt.getInstance().init(this);
 ```
 
 ### 2.设置消息监听
-```java
+```
  AndMqtt.getInstance().setMessageListener(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
@@ -37,7 +37,7 @@ AndMqtt.getInstance().init(this);
 对收到的消息进行处理
 
 ### 3.连接服务器
-```java
+```
  AndMqtt.getInstance().connect(new ConnectBuilder().setServer("服务器地址")
                 .setPort(端口号), new IMqttActionListener() {
             @Override
@@ -53,7 +53,7 @@ AndMqtt.getInstance().init(this);
 ```
 
 也可以直接链式调用
-```java
+```
  AndMqtt.getInstance().setMessageListener(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
@@ -91,7 +91,7 @@ AndMqtt.getInstance().init(this);
 ClientId用于标识设备，取设备唯一值或和服务器约定。
 
 ### 订阅
-```java
+```
 AndMqtt.getInstance().subscribe(new MqttSubscribe()
                 .setTopic("主题")
                 .setQos(0), new IMqttActionListener() {
@@ -107,7 +107,7 @@ AndMqtt.getInstance().subscribe(new MqttSubscribe()
         });
 ```
 ### 取消订阅
-```java
+```
  AndMqtt.getInstance().unSubscribe(new MqttUnSubscribe()
                 .setTopic("主题"), new IMqttActionListener() {
             @Override
@@ -123,7 +123,7 @@ AndMqtt.getInstance().subscribe(new MqttSubscribe()
 ```
 
 ### 发布
-```java
+```
 AndMqtt.getInstance().publish(new MqttPublish()
                 .setMsg("消息")
                 .setQos(0)
