@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public class UnSubscribeBuilder implements IBuilder {
+public class MqttUnSubscribe implements IMqtt {
 
     private String mTopic;
 
@@ -18,16 +18,16 @@ public class UnSubscribeBuilder implements IBuilder {
      * 设置主题
      *
      * @param mTopic 主题
-     * @return UnSubscribeBuilder
+     * @return MqttUnSubscribe
      */
-    public UnSubscribeBuilder setTopic(String mTopic) {
+    public MqttUnSubscribe setTopic(String mTopic) {
         this.mTopic = mTopic;
         return this;
     }
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        MqttManager.getInstance().getConnectBuilder().getClient()
+        AndMqtt.getInstance().getMqttConnect().getClient()
                 .unsubscribe(mTopic, null, listener);
     }
 }

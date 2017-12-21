@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public class PublishBuilder implements IBuilder {
+public class MqttPublish implements IMqtt {
 
     private String mTopic;
     private int mQos;
@@ -21,9 +21,9 @@ public class PublishBuilder implements IBuilder {
      * 设置主题
      *
      * @param mTopic 主题
-     * @return PublishBuilder
+     * @return MqttPublish
      */
-    public PublishBuilder setTopic(String mTopic) {
+    public MqttPublish setTopic(String mTopic) {
         this.mTopic = mTopic;
         return this;
     }
@@ -34,9 +34,9 @@ public class PublishBuilder implements IBuilder {
      * QoS=2：只有一次，确保消息只到达一次。
      *
      * @param mQos 服务质量
-     * @return PublishBuilder
+     * @return MqttPublish
      */
-    public PublishBuilder setQos(int mQos) {
+    public MqttPublish setQos(int mQos) {
         this.mQos = mQos;
         return this;
     }
@@ -45,9 +45,9 @@ public class PublishBuilder implements IBuilder {
      * 设置消息
      *
      * @param mMsg 消息
-     * @return PublishBuilder
+     * @return MqttPublish
      */
-    public PublishBuilder setMsg(String mMsg) {
+    public MqttPublish setMsg(String mMsg) {
         this.mMsg = mMsg;
         return this;
     }
@@ -56,16 +56,16 @@ public class PublishBuilder implements IBuilder {
      * 设置是否在服务器中保存消息体
      *
      * @param mRetained boolean
-     * @return PublishBuilder
+     * @return MqttPublish
      */
-    public PublishBuilder setRetained(boolean mRetained) {
+    public MqttPublish setRetained(boolean mRetained) {
         this.mRetained = mRetained;
         return this;
     }
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        MqttManager.getInstance().getConnectBuilder().getClient()
+        AndMqtt.getInstance().getMqttConnect().getClient()
                 .publish(mTopic, mMsg.getBytes(), mQos, mRetained, null, listener);
     }
 }

@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public interface IBuilder {
+public interface IMqtt {
 
     void execute(IMqttActionListener listener) throws MqttException;
 }

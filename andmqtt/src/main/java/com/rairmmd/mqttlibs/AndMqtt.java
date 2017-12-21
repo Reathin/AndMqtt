@@ -3,6 +3,7 @@ package com.rairmmd.mqttlibs;
 import android.content.Context;
 import android.util.Log;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.android.service.MqttTraceHandler;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -15,26 +16,26 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:Mqtt管理器
  */
 
-public class MqttManager {
+public class AndMqtt {
 
     public static final String TAG = "AndMqtt";
 
-    private static MqttManager instance;
+    private static AndMqtt instance;
     private Context mContext;
-    private ConnectBuilder mConnectBuilder;
+    private MqttConnect mMqttConnect;
     private MqttCallbackExtended mMessageListener;
     private MqttTraceHandler mTraceListener;
     private boolean mTraceEnable;
 
-    private MqttManager() {
+    private AndMqtt() {
 
     }
 
-    public static MqttManager getInstance() {
+    public static AndMqtt getInstance() {
         if (instance == null) {
-            synchronized (MqttManager.class) {
+            synchronized (AndMqtt.class) {
                 if (instance == null) {
-                    instance = new MqttManager();
+                    instance = new AndMqtt();
                 }
             }
         }
@@ -55,7 +56,7 @@ public class MqttManager {
      *
      * @param listener MqttCallbackExtended
      */
-    public MqttManager setMessageListener(MqttCallbackExtended listener) {
+    public AndMqtt setMessageListener(MqttCallbackExtended listener) {
         this.mMessageListener = listener;
         return this;
     }
@@ -65,9 +66,9 @@ public class MqttManager {
      *
      * @param mTraceListener MqttTraceHandler
      *                       需先调用 setTraceEnable() 打开
-     * @return MqttManager
+     * @return AndMqtt
      */
-    public MqttManager setTraceListener(MqttTraceHandler mTraceListener) {
+    public AndMqtt setTraceListener(MqttTraceHandler mTraceListener) {
         this.mTraceListener = mTraceListener;
         return this;
     }
@@ -76,11 +77,11 @@ public class MqttManager {
      * 日志开关
      *
      * @param mTraceEnable 开关
-     * @return MqttManager
+     * @return AndMqtt
      */
-    public MqttManager setTraceEnable(boolean mTraceEnable) {
+    public AndMqtt setTraceEnable(boolean mTraceEnable) {
         this.mTraceEnable = mTraceEnable;
-        mConnectBuilder.setTraceEnabled(mTraceEnable);
+        mMqttConnect.setTraceEnabled(mTraceEnable);
         return this;
     }
 
@@ -91,7 +92,7 @@ public class MqttManager {
      */
     public Context getContext() {
         if (mContext == null) {
-            Log.e(TAG, "Context is null,you need To initialize the MqttManager first!");
+            Log.e(TAG, "Context is null,you need To initialize the AndMqtt first!");
         }
         return mContext;
     }
@@ -99,20 +100,20 @@ public class MqttManager {
     /**
      * 获取连接对象
      *
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder getConnectBuilder() {
-        return mConnectBuilder;
+    public MqttConnect getMqttConnect() {
+        return mMqttConnect;
     }
 
     /**
      * 连接服务器
      *
-     * @param builder  服务器连接间建造者
+     * @param builder  服务器连接MqttConnect
      * @param listener 监听
      */
-    public void connect(ConnectBuilder builder, IMqttActionListener listener) {
-        mConnectBuilder = builder;
+    public void connect(MqttConnect builder, IMqttActionListener listener) {
+        mMqttConnect = builder;
         if (mMessageListener != null) {
             builder.setMessageListener(mMessageListener);
         }
@@ -130,10 +131,10 @@ public class MqttManager {
     /**
      * 订阅
      *
-     * @param builder  订阅建造者
+     * @param builder  MqttSubscribe
      * @param listener 监听
      */
-    public void subscribe(SubscribeBuilder builder, IMqttActionListener listener) {
+    public void subscribe(MqttSubscribe builder, IMqttActionListener listener) {
         try {
             builder.execute(listener);
         } catch (MqttException e) {
@@ -144,10 +145,10 @@ public class MqttManager {
     /**
      * 发布
      *
-     * @param builder  发布建造者
+     * @param builder  MqttPublish
      * @param listener 监听
      */
-    public void publish(PublishBuilder builder, IMqttActionListener listener) {
+    public void publish(MqttPublish builder, IMqttActionListener listener) {
         try {
             builder.execute(listener);
         } catch (MqttException e) {
@@ -158,10 +159,10 @@ public class MqttManager {
     /**
      * 取消订阅
      *
-     * @param builder  建造者
+     * @param builder  MqttUnSubscribe
      * @param listener 监听
      */
-    public void unSubscribe(UnSubscribeBuilder builder, IMqttActionListener listener) {
+    public void unSubscribe(MqttUnSubscribe builder, IMqttActionListener listener) {
         try {
             builder.execute(listener);
         } catch (MqttException e) {
@@ -170,19 +171,31 @@ public class MqttManager {
     }
 
     /**
+     * 获取MqttAndroidClient
+     *
+     * @return MqttAndroidClient
+     */
+    public MqttAndroidClient getMqttClient() {
+        if (mMqttConnect != null && mMqttConnect.getClient() != null) {
+            return mMqttConnect.getClient();
+        }
+        return null;
+    }
+
+    /**
      * 是否连接
      *
      * @return
      */
     public boolean isConneect() {
-        if (mConnectBuilder == null) {
+        if (mMqttConnect == null) {
             return false;
         }
-        if (mConnectBuilder.getClient() == null) {
+        if (mMqttConnect.getClient() == null) {
             return false;
         }
         try {
-            return mConnectBuilder.getClient().isConnected();
+            return mMqttConnect.getClient().isConnected();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             return false;

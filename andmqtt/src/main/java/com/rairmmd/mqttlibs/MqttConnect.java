@@ -22,7 +22,7 @@ import java.io.InputStream;
  * desc:连接建造者
  */
 
-public class ConnectBuilder implements IBuilder {
+public class MqttConnect implements IMqtt {
 
     private static final String TAG = "AndMqtt";
     private final Context mContext;
@@ -44,19 +44,18 @@ public class ConnectBuilder implements IBuilder {
     private MqttCallback mMessageListener;
     private boolean traceEnabled = false;
     private MqttTraceHandler mTraceCallback;
-    private static ConnectBuilder instance;
 
-    public ConnectBuilder() {
-        mContext = MqttManager.getInstance().getContext();
+    public MqttConnect() {
+        mContext = AndMqtt.getInstance().getContext();
     }
 
     /**
      * 设置clientId
      *
      * @param mClientId clientId 设备唯一表示
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setClientId(String mClientId) {
+    public MqttConnect setClientId(String mClientId) {
         this.mClientId = mClientId;
         return this;
     }
@@ -65,9 +64,9 @@ public class ConnectBuilder implements IBuilder {
      * 设置服务器地址
      *
      * @param mServer 服务器地址 ：  tcp://111.111.111.111
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setServer(String mServer) {
+    public MqttConnect setServer(String mServer) {
         this.mServer = mServer;
         return this;
     }
@@ -76,9 +75,9 @@ public class ConnectBuilder implements IBuilder {
      * 设置端口
      *
      * @param mPort 端口号
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setPort(int mPort) {
+    public MqttConnect setPort(int mPort) {
         this.mPort = mPort;
         return this;
     }
@@ -87,9 +86,9 @@ public class ConnectBuilder implements IBuilder {
      * 设置超时时间
      *
      * @param mTimeout 超时时间
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setTimeout(int mTimeout) {
+    public MqttConnect setTimeout(int mTimeout) {
         this.mTimeout = mTimeout;
         return this;
     }
@@ -98,9 +97,9 @@ public class ConnectBuilder implements IBuilder {
      * 保持连接 ，心跳时间
      *
      * @param keepAlive 心跳时间
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setKeepAlive(int keepAlive) {
+    public MqttConnect setKeepAlive(int keepAlive) {
         this.mKeepAlive = keepAlive;
         return this;
     }
@@ -112,9 +111,9 @@ public class ConnectBuilder implements IBuilder {
      * false时会在重连时继续未完成的subscriptions
      *
      * @param cleanSession Boolean
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setCleanSession(boolean cleanSession) {
+    public MqttConnect setCleanSession(boolean cleanSession) {
         this.mCleanSession = cleanSession;
         return this;
     }
@@ -123,9 +122,9 @@ public class ConnectBuilder implements IBuilder {
      * 设置用户名
      *
      * @param userName 用户名
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setUserName(String userName) {
+    public MqttConnect setUserName(String userName) {
         this.mUserName = userName;
         return this;
     }
@@ -134,9 +133,9 @@ public class ConnectBuilder implements IBuilder {
      * 设置密码
      *
      * @param password 密码
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setUserPassword(String password) {
+    public MqttConnect setUserPassword(String password) {
         this.mUserPassword = password;
         return this;
     }
@@ -146,9 +145,9 @@ public class ConnectBuilder implements IBuilder {
      *
      * @param sslKeyPath     ssl路径
      * @param sslKeyPassword 密码
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setSsl(String sslKeyPath, String sslKeyPassword) {
+    public MqttConnect setSsl(String sslKeyPath, String sslKeyPassword) {
         this.mSslKeyPath = sslKeyPath;
         this.mSslKeyPassword = sslKeyPassword;
         return this;
@@ -158,9 +157,9 @@ public class ConnectBuilder implements IBuilder {
      * 是否显示相关日志
      *
      * @param traceEnabled Boolean
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setTraceEnabled(boolean traceEnabled) {
+    public MqttConnect setTraceEnabled(boolean traceEnabled) {
         this.traceEnabled = traceEnabled;
         return this;
     }
@@ -169,14 +168,25 @@ public class ConnectBuilder implements IBuilder {
      * 相关日志回调
      *
      * @param traceCallback 回调
-     * @return ConnectBuilder
+     * @return MqttConnect
      */
-    public ConnectBuilder setTraceCallback(MqttTraceHandler traceCallback) {
+    public MqttConnect setTraceCallback(MqttTraceHandler traceCallback) {
         this.mTraceCallback = traceCallback;
         return this;
     }
 
-    public ConnectBuilder setLastWill(String lastWillMsg, String lastWillTopic, int lastWillQos, boolean lastWillRetained) {
+    /**
+     * 设置遗留消息
+     * <p>
+     * 当设备断开连接时会主动publish的消息
+     *
+     * @param lastWillMsg      消息
+     * @param lastWillTopic    主题
+     * @param lastWillQos      服务质量
+     * @param lastWillRetained 设置是否在服务器中保存消息体
+     * @return
+     */
+    public MqttConnect setLastWill(String lastWillMsg, String lastWillTopic, int lastWillQos, boolean lastWillRetained) {
         this.lastWillMsg = lastWillMsg;
         this.lastWillTopic = lastWillTopic;
         this.lastWillQos = lastWillQos;
@@ -189,7 +199,7 @@ public class ConnectBuilder implements IBuilder {
      *
      * @param listener 监听
      */
-    public ConnectBuilder setMessageListener(MqttCallbackExtended listener) {
+    public MqttConnect setMessageListener(MqttCallbackExtended listener) {
         this.mMessageListener = listener;
         return this;
     }
@@ -229,24 +239,24 @@ public class ConnectBuilder implements IBuilder {
         if (!TextUtils.isEmpty(mUserPassword)) {
             connectOptions.setPassword(mUserPassword.toCharArray());
         }
-        boolean doConnect = true;
+        boolean isConnect = true;
         if ((!TextUtils.isEmpty(lastWillMsg)) || (!TextUtils.isEmpty(lastWillTopic))) {
             try {
                 connectOptions.setWill(lastWillTopic, lastWillMsg.getBytes(), lastWillQos, lastWillRetained);
             } catch (Exception e) {
-                Log.d(TAG, e.getMessage());
-                doConnect = false;
+                Log.e(TAG, e.getMessage());
+                isConnect = false;
             }
         }
         mClient.setCallback(mMessageListener);
         if (traceEnabled) {
             mClient.setTraceCallback(mTraceCallback);
         }
-        if (doConnect) {
+        if (isConnect) {
             try {
                 mClient.connect(connectOptions, null, listener);
             } catch (MqttException e) {
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         }
     }

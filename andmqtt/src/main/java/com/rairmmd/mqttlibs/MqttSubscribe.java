@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public class SubscribeBuilder implements IBuilder {
+public class MqttSubscribe implements IMqtt {
 
     private String mTopic;
     private int mQos;
@@ -19,9 +19,9 @@ public class SubscribeBuilder implements IBuilder {
      * 设置主题
      *
      * @param mTopic 主题
-     * @return SubscribeBuilder
+     * @return MqttSubscribe
      */
-    public SubscribeBuilder setTopic(String mTopic) {
+    public MqttSubscribe setTopic(String mTopic) {
         this.mTopic = mTopic;
         return this;
     }
@@ -32,16 +32,16 @@ public class SubscribeBuilder implements IBuilder {
      * QoS=2：只有一次，确保消息只到达一次。
      *
      * @param mQos 服务质量
-     * @return SubscribeBuilder
+     * @return MqttSubscribe
      */
-    public SubscribeBuilder setQos(int mQos) {
+    public MqttSubscribe setQos(int mQos) {
         this.mQos = mQos;
         return this;
     }
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        MqttManager.getInstance().getConnectBuilder().getClient()
+        AndMqtt.getInstance().getMqttConnect().getClient()
                 .subscribe(mTopic, mQos, null, listener);
     }
 }

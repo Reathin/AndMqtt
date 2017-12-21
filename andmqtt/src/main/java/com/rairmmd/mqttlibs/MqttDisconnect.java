@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * desc:
  */
 
-public class DisconnectBuilder implements IBuilder {
+public class MqttDisconnect implements IMqtt {
 
     private long mQuiesceTimeout;
 
@@ -18,16 +18,16 @@ public class DisconnectBuilder implements IBuilder {
      * 延时多久断开连接
      *
      * @param quiesceTimeout 时间
-     * @return DisconnectBuilder
+     * @return MqttDisconnect
      */
-    public DisconnectBuilder setQuiesceTimeout(long quiesceTimeout) {
+    public MqttDisconnect setQuiesceTimeout(long quiesceTimeout) {
         this.mQuiesceTimeout = quiesceTimeout;
         return this;
     }
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        MqttManager.getInstance().getConnectBuilder().getClient()
+        AndMqtt.getInstance().getMqttConnect().getClient()
                 .disconnect(mQuiesceTimeout, null, listener);
     }
 }
