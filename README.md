@@ -6,12 +6,12 @@ android mqttclient
 建议在Application中初始化，避免持有Activity导致内存泄露
 
 ```java
-MqttManager.getInstance().init(this);
+AndMqtt.getInstance().init(this);
 ```
 
 ### 2.设置消息监听
 ```java
- MqttManager.getInstance().setMessageListener(new MqttCallbackExtended() {
+ AndMqtt.getInstance().setMessageListener(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
                 Log.i("Rair", "(MainActivity.java:29)-connectComplete:->连接完成");
@@ -38,7 +38,7 @@ MqttManager.getInstance().init(this);
 
 ### 3.连接服务器
 ```java
- MqttManager.getInstance().connect(new ConnectBuilder().setServer("服务器地址")
+ AndMqtt.getInstance().connect(new ConnectBuilder().setServer("服务器地址")
                 .setPort(端口号), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -54,7 +54,7 @@ MqttManager.getInstance().init(this);
 
 也可以直接链式调用
 ```java
- MqttManager.getInstance().setMessageListener(new MqttCallbackExtended() {
+ AndMqtt.getInstance().setMessageListener(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
                 Log.i("Rair", "(MainActivity.java:29)-connectComplete:->连接完成");
@@ -92,7 +92,7 @@ ClientId用于标识设备，取设备唯一值或和服务器约定。
 
 ### 订阅
 ```java
-MqttManager.getInstance().subscribe(new SubscribeBuilder()
+AndMqtt.getInstance().subscribe(new MqttSubscribe()
                 .setTopic("主题")
                 .setQos(0), new IMqttActionListener() {
             @Override
@@ -108,7 +108,7 @@ MqttManager.getInstance().subscribe(new SubscribeBuilder()
 ```
 ### 取消订阅
 ```java
- MqttManager.getInstance().unSubscribe(new UnSubscribeBuilder()
+ AndMqtt.getInstance().unSubscribe(new MqttUnSubscribe()
                 .setTopic("主题"), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -124,7 +124,7 @@ MqttManager.getInstance().subscribe(new SubscribeBuilder()
 
 ### 发布
 ```java
-MqttManager.getInstance().publish(new PublishBuilder()
+AndMqtt.getInstance().publish(new MqttPublish()
                 .setMsg("消息")
                 .setQos(0)
                 .setTopic("主题"), new IMqttActionListener() {
