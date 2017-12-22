@@ -1,5 +1,9 @@
 ## AndMqtt
 android mqttclient
+```
+compile 'com.rairmmd:andmqtt:1.0.2'
+```
+
 
 ## 如何使用
 ### 1、初始化
@@ -38,7 +42,7 @@ AndMqtt.getInstance().init(this);
 
 ### 3.连接服务器
 ```
- AndMqtt.getInstance().connect(new ConnectBuilder().setServer("服务器地址")
+ AndMqtt.getInstance().connect(new MqttConnect().setServer("服务器地址")
                 .setPort(端口号), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
