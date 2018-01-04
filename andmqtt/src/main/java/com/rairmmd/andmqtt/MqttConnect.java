@@ -43,6 +43,7 @@ public class MqttConnect implements IMqtt {
     private boolean lastWillRetained;
     private MqttCallback mMessageListener;
     private boolean traceEnabled = false;
+    private boolean mAutoReconnect = true;
     private MqttTraceHandler mTraceCallback;
 
     public MqttConnect() {
@@ -154,6 +155,17 @@ public class MqttConnect implements IMqtt {
     }
 
     /**
+     * 是否自动重连
+     *
+     * @param mAutoReconnect 是否自动重连
+     * @return MqttConnect
+     */
+    public MqttConnect setAutoReconnect(boolean mAutoReconnect) {
+        this.mAutoReconnect = mAutoReconnect;
+        return this;
+    }
+
+    /**
      * 是否显示相关日志
      *
      * @param traceEnabled Boolean
@@ -220,7 +232,12 @@ public class MqttConnect implements IMqtt {
         if (mClient == null) {
             mClient = new MqttAndroidClient(mContext, uri, mClientId);
         }
+        mClient.setCallback(mMessageListener);
         MqttConnectOptions connectOptions = new MqttConnectOptions();
+        connectOptions.setCleanSession(mCleanSession);
+        connectOptions.setConnectionTimeout(mTimeout);
+        connectOptions.setKeepAliveInterval(mKeepAlive);
+        connectOptions.setAutomaticReconnect(mAutoReconnect);
         mClient.connect(connectOptions);
         if (!TextUtils.isEmpty(mSslKeyPath)) {
             try {
@@ -230,9 +247,6 @@ public class MqttConnect implements IMqtt {
                 Log.e(TAG, e.getMessage());
             }
         }
-        connectOptions.setCleanSession(mCleanSession);
-        connectOptions.setConnectionTimeout(mTimeout);
-        connectOptions.setKeepAliveInterval(mKeepAlive);
         if (!TextUtils.isEmpty(mUserName)) {
             connectOptions.setUserName(mUserName);
         }
@@ -248,7 +262,6 @@ public class MqttConnect implements IMqtt {
                 isConnect = false;
             }
         }
-        mClient.setCallback(mMessageListener);
         if (traceEnabled) {
             mClient.setTraceCallback(mTraceCallback);
         }
