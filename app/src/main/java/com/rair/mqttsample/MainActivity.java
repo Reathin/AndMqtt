@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }).connect(new MqttConnect().setClientId("android")
                 .setPort(1884)
+                .setAutoReconnect(true)
+                .setCleanSession(true)
                 .setServer("tcp://xx.xx.xx.xx"), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
