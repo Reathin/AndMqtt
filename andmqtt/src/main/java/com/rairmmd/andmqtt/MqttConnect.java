@@ -24,8 +24,8 @@ import java.io.InputStream;
 
 public class MqttConnect implements IMqtt {
 
-    private static final String TAG = "AndMqtt";
-    private final Context mContext;
+    private final String TAG = "AndMqtt";
+    private Context mContext;
     private String mClientId;
     private String mServer;
     private int mPort;
