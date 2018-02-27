@@ -110,6 +110,9 @@ public class MqttConnect implements IMqtt {
      * <p>
      * 为true时会移除这个client所有的subscriptions
      * false时会在重连时继续未完成的subscriptions
+     * <p>
+     * 设置是否清空session,这里如果设置为false表示服务器会保留客户端的连接记录，
+     * 这里设置为true表示每次连接到服务器都以新的身份连接
      *
      * @param cleanSession Boolean
      * @return MqttConnect
