@@ -187,7 +187,7 @@ public class AndMqtt {
      *
      * @return
      */
-    public boolean isConneect() {
+    public boolean isConnect() {
         if (mMqttConnect == null) {
             return false;
         }
