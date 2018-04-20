@@ -1,7 +1,7 @@
 ## AndMqtt
 android mqttclient
 ```
-implementation 'com.rairmmd:andmqtt:1.0.4'
+implementation 'com.rairmmd:andmqtt:1.0.3'
 ```
 
 
