@@ -28,7 +28,6 @@ public class AndMqtt {
     private boolean mTraceEnable;
 
     private AndMqtt() {
-
     }
 
     public static AndMqtt getInstance() {
