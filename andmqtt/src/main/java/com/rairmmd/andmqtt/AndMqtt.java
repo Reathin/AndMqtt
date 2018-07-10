@@ -171,6 +171,20 @@ public class AndMqtt {
     }
 
     /**
+     * 断开连接
+     *
+     * @param builder  MqttDisconnect
+     * @param listener 监听
+     */
+    public void disConnect(MqttDisconnect builder, IMqttActionListener listener) {
+        try {
+            builder.execute(listener);
+        } catch (MqttException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    /**
      * 获取MqttAndroidClient
      *
      * @return MqttAndroidClient
@@ -201,23 +215,4 @@ public class AndMqtt {
             return false;
         }
     }
-
-    /**
-     * 断开连接
-     */
-    public void disConnect() {
-        if (mMqttConnect == null) {
-            return;
-        }
-        if (mMqttConnect.getClient() == null) {
-            return;
-        }
-        try {
-            mMqttConnect.getClient().disconnect();
-        } catch (MqttException e) {
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
 }
