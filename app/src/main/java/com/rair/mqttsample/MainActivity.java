@@ -6,15 +6,16 @@ import android.util.Log;
 
 import com.rairmmd.andmqtt.AndMqtt;
 import com.rairmmd.andmqtt.MqttConnect;
+import com.rairmmd.andmqtt.MqttDisconnect;
 import com.rairmmd.andmqtt.MqttPublish;
 import com.rairmmd.andmqtt.MqttSubscribe;
 import com.rairmmd.andmqtt.MqttUnSubscribe;
-import com.rairmmd.andmqtt.mqttv3.IMqttActionListener;
-import com.rairmmd.andmqtt.mqttv3.IMqttDeliveryToken;
-import com.rairmmd.andmqtt.mqttv3.IMqttToken;
-import com.rairmmd.andmqtt.mqttv3.MqttCallbackExtended;
-import com.rairmmd.andmqtt.mqttv3.MqttMessage;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPort(1884)
                 .setAutoReconnect(true)
                 .setCleanSession(true)
-                .setServer("tcp://xx.xx.xx.xx"), new IMqttActionListener() {
+                .setServer("tcp://119.3.27.191"), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.i("Rair", "(MainActivity.java:51)-onSuccess:->连接成功");
@@ -111,6 +112,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        AndMqtt.getInstance().disConnect();
+        if (AndMqtt.getInstance().isConnect()) {
+            AndMqtt.getInstance().disConnect(new MqttDisconnect()
+                    .setQuiesceTimeout(0), new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.i("Rair", "(MainActivity.java:98)-onFailure:->断开连接成功");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.i("Rair", "(MainActivity.java:98)-onFailure:->断开连接失败");
+                }
+            });
+        }
     }
 }

@@ -1,9 +1,17 @@
 ## AndMqtt
 android mqttclient
-```
-implementation 'com.rairmmd:andmqtt:1.0.4'
-```
 
+
+在项目级别build.gradle添加：
+```
+maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
+```
+在module级别build.gradle添加：
+```
+implementation 'com.rairmmd:andmqtt:1.0.5'
+implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+```
 
 ## 如何使用
 ### 1、初始化

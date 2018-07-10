@@ -5,7 +5,7 @@ apply plugin: 'com.jfrog.bintray'
 def siteUrl = 'https://github.com/Rairmmd/AndMqtt'
 def gitUrl = 'https://github.com/Rairmmd/AndMqtt.git'
 group = "com.rairmmd"
-version = "1.0.4"       //这个是版本号，必须填写
+version = "1.0.5"       //这个是版本号，必须填写
 
 android {
     compileSdkVersion 27
@@ -39,8 +39,8 @@ repositories {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.android.support:appcompat-v7:27.1.1'
-//    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-//    api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 
 install {

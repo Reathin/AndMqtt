@@ -9,6 +9,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <service android:name=".service.MqttService" />
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 </manifest>
