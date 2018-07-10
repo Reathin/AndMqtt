@@ -1,7 +1,7 @@
 ## AndMqtt
 android mqttclient
 ```
-implementation 'com.rairmmd:andmqtt:1.0.3'
+implementation 'com.rairmmd:andmqtt:1.0.4'
 ```
 
 
@@ -146,7 +146,15 @@ AndMqtt.getInstance().publish(new MqttPublish()
             }
         });
 ```
+### 断开连接
+```
+AndMqtt.getInstance().disConnect();
+```
 
+### 是否连接
+```
+boolean isConnect = AndMqtt.getInstance().isConnect();
+```
 
 
 

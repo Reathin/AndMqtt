@@ -9,12 +9,12 @@ import com.rairmmd.andmqtt.MqttConnect;
 import com.rairmmd.andmqtt.MqttPublish;
 import com.rairmmd.andmqtt.MqttSubscribe;
 import com.rairmmd.andmqtt.MqttUnSubscribe;
+import com.rairmmd.andmqtt.mqttv3.IMqttActionListener;
+import com.rairmmd.andmqtt.mqttv3.IMqttDeliveryToken;
+import com.rairmmd.andmqtt.mqttv3.IMqttToken;
+import com.rairmmd.andmqtt.mqttv3.MqttCallbackExtended;
+import com.rairmmd.andmqtt.mqttv3.MqttMessage;
 
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -111,5 +111,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        AndMqtt.getInstance().disConnect();
     }
 }

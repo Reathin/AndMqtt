@@ -3,11 +3,11 @@ package com.rairmmd.andmqtt;
 import android.content.Context;
 import android.util.Log;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.android.service.MqttTraceHandler;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import com.rairmmd.andmqtt.mqttv3.IMqttActionListener;
+import com.rairmmd.andmqtt.mqttv3.MqttCallbackExtended;
+import com.rairmmd.andmqtt.mqttv3.MqttException;
+import com.rairmmd.andmqtt.service.MqttAndroidClient;
+import com.rairmmd.andmqtt.service.MqttTraceHandler;
 
 /**
  * @author Rair
@@ -18,7 +18,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class AndMqtt {
 
-    public static final String TAG = "AndMqtt";
+    private static final String TAG = "AndMqtt";
 
     private static AndMqtt instance;
     private Context mContext;
@@ -28,6 +28,7 @@ public class AndMqtt {
     private boolean mTraceEnable;
 
     private AndMqtt() {
+
     }
 
     public static AndMqtt getInstance() {
@@ -91,7 +92,7 @@ public class AndMqtt {
      */
     public Context getContext() {
         if (mContext == null) {
-            Log.e(TAG, "Context is null,you need To initialize the AndMqtt first!");
+            throw new IllegalArgumentException("Context is null,you need To initialize the AndMqtt first!");
         }
         return mContext;
     }
@@ -184,7 +185,7 @@ public class AndMqtt {
     /**
      * 是否连接
      *
-     * @return
+     * @return boolean
      */
     public boolean isConnect() {
         if (mMqttConnect == null) {
@@ -198,6 +199,24 @@ public class AndMqtt {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * 断开连接
+     */
+    public void disConnect() {
+        if (mMqttConnect == null) {
+            return;
+        }
+        if (mMqttConnect.getClient() == null) {
+            return;
+        }
+        try {
+            mMqttConnect.getClient().disconnect();
+        } catch (MqttException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
     }
 

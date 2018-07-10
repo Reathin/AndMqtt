@@ -1,7 +1,7 @@
 package com.rairmmd.andmqtt;
 
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import com.rairmmd.andmqtt.mqttv3.IMqttActionListener;
+import com.rairmmd.andmqtt.mqttv3.MqttException;
 
 /**
  * @author Rair
