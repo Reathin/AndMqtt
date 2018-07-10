@@ -163,7 +163,9 @@ AndMqtt.getInstance().disConnect();
 ```
 boolean isConnect = AndMqtt.getInstance().isConnect();
 ```
-
+**注意**
+进行任何操作前都需保证MQTT是连接的  
+可用isConnect()判断一下
 
 
 
