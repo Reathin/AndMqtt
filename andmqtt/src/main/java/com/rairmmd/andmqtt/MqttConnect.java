@@ -16,6 +16,8 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
 import java.io.InputStream;
 
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * @author Rair
  * @date 2017/12/13
@@ -39,6 +41,7 @@ public class MqttConnect implements IMqtt {
     private boolean mCleanSession;
     private int mSslKeyRawId;
     private String mSslKeyPassword;
+    private SSLSocketFactory mSslSocketFactory;
     private MqttAndroidClient mClient;
     private int lastWillQos;
     private boolean lastWillRetained;
@@ -159,6 +162,17 @@ public class MqttConnect implements IMqtt {
     }
 
     /**
+     * 自定义SslSocketFactoryl
+     *
+     * @param mSslSocketFactory mSslSocketFactory
+     * @return MqttConnect
+     */
+    public MqttConnect setSslSocketFactory(SSLSocketFactory mSslSocketFactory) {
+        this.mSslSocketFactory = mSslSocketFactory;
+        return this;
+    }
+
+    /**
      * 是否自动重连
      *
      * @param mAutoReconnect 是否自动重连
@@ -250,6 +264,9 @@ public class MqttConnect implements IMqtt {
             } catch (MqttSecurityException e) {
                 Log.e(TAG, e.getMessage());
             }
+        }
+        if (mSslSocketFactory != null) {
+            connectOptions.setSocketFactory(mSslSocketFactory);
         }
         if (!TextUtils.isEmpty(mUserName)) {
             connectOptions.setUserName(mUserName);
