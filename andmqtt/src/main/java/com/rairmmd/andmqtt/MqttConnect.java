@@ -1,6 +1,7 @@
 package com.rairmmd.andmqtt;
 
 import android.content.Context;
+import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,7 +37,7 @@ public class MqttConnect implements IMqtt {
     private String mUserName;
     private String mUserPassword;
     private boolean mCleanSession;
-    private String mSslKeyPath;
+    private int mSslKeyRawId;
     private String mSslKeyPassword;
     private MqttAndroidClient mClient;
     private int lastWillQos;
@@ -147,12 +148,12 @@ public class MqttConnect implements IMqtt {
     /**
      * 设置ssl
      *
-     * @param sslKeyPath     ssl路径
+     * @param mSslKeyRawId   ssl key RawId
      * @param sslKeyPassword 密码
      * @return MqttConnect
      */
-    public MqttConnect setSsl(String sslKeyPath, String sslKeyPassword) {
-        this.mSslKeyPath = sslKeyPath;
+    public MqttConnect setSsl(@RawRes int mSslKeyRawId, String sslKeyPassword) {
+        this.mSslKeyRawId = mSslKeyRawId;
         this.mSslKeyPassword = sslKeyPassword;
         return this;
     }
@@ -242,9 +243,9 @@ public class MqttConnect implements IMqtt {
         connectOptions.setKeepAliveInterval(mKeepAlive);
         connectOptions.setAutomaticReconnect(mAutoReconnect);
         mClient.connect(connectOptions);
-        if (!TextUtils.isEmpty(mSslKeyPath)) {
+        if (mSslKeyRawId != 0) {
             try {
-                InputStream key = this.getClass().getResourceAsStream(mSslKeyPath);
+                InputStream key = mContext.getResources().openRawResource(mSslKeyRawId);
                 connectOptions.setSocketFactory(mClient.getSSLSocketFactory(key, mSslKeyPassword));
             } catch (MqttSecurityException e) {
                 Log.e(TAG, e.getMessage());
