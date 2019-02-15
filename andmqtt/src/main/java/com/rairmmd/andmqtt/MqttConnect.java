@@ -5,8 +5,9 @@ import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.android.service.MqttTraceHandler;
+import com.rairmmd.andmqtt.service.MqttAndroidClient;
+import com.rairmmd.andmqtt.service.MqttTraceHandler;
+
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
