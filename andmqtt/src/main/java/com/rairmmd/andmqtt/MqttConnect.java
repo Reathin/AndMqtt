@@ -285,14 +285,11 @@ public class MqttConnect implements IMqtt {
             }
         }
         if (traceEnabled) {
+            mClient.setTraceEnabled(traceEnabled);
             mClient.setTraceCallback(mTraceCallback);
         }
         if (isConnect) {
-            try {
-                mClient.connect(connectOptions, null, listener);
-            } catch (MqttException e) {
-                Log.e(TAG, e.getMessage());
-            }
+            mClient.connect(connectOptions, null, listener);
         }
     }
 }
