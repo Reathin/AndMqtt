@@ -10,7 +10,7 @@
 
     <application>
         <service
-            android:name=".service.MqttService"
+            android:name="org.eclipse.paho.android.service.MqttService"
             android:enabled="true"
             android:exported="true"
             android:process=":andmqtt" />
