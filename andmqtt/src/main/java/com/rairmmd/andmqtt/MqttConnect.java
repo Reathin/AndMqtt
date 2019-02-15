@@ -288,7 +288,11 @@ public class MqttConnect implements IMqtt {
             mClient.setTraceCallback(mTraceCallback);
         }
         if (isConnect) {
-            mClient.connect(connectOptions, null, listener);
+            try {
+                mClient.connect(connectOptions, null, listener);
+            } catch (MqttException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
     }
 }
