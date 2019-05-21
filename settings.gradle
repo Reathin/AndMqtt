@@ -1,1 +1,1 @@
-include ':app', ':andmqtt'
+include ':module_app', ':andmqtt'

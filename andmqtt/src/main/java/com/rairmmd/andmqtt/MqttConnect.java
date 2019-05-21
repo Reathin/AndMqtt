@@ -1,7 +1,6 @@
 package com.rairmmd.andmqtt;
 
 import android.content.Context;
-import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -155,7 +154,7 @@ public class MqttConnect implements IMqtt {
      * @param sslKeyPassword 密码
      * @return MqttConnect
      */
-    public MqttConnect setSsl(@RawRes int mSslKeyRawId, String sslKeyPassword) {
+    public MqttConnect setSsl(int mSslKeyRawId, String sslKeyPassword) {
         this.mSslKeyRawId = mSslKeyRawId;
         this.mSslKeyPassword = sslKeyPassword;
         return this;

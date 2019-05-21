@@ -8,9 +8,8 @@ maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
 ```
 在module级别build.gradle添加：
 ```
-implementation 'com.rairmmd:andmqtt:1.1.2'
-implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-
+implementation 'com.rairmmd:andmqtt:1.0.8'
+implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.1'
 implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 ```
 
