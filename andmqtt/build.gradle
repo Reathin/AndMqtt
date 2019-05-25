@@ -6,7 +6,7 @@ def siteUrl = 'https://github.com/Rairmmd/AndMqtt'
 def gitUrl = 'https://github.com/Rairmmd/AndMqtt.git'
 
 group = "com.rairmmd"
-version = "1.0.8"       //这个是版本号，必须填写
+version = "1.0.9"       //这个是版本号，必须填写
 
 android {
 
@@ -26,12 +26,11 @@ repositories {
     google()
     jcenter()
     maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
-    maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
 }
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.1'
+    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 
