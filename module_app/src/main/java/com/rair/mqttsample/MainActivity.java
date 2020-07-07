@@ -11,6 +11,7 @@ import com.rairmmd.andmqtt.MqttPublish;
 import com.rairmmd.andmqtt.MqttSubscribe;
 import com.rairmmd.andmqtt.MqttUnSubscribe;
 
+import org.eclipse.paho.android.service.MqttTraceHandler;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -24,31 +25,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AndMqtt.getInstance().init(this);
-        AndMqtt.getInstance().setMessageListener(new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean reconnect, String serverURI) {
-                Log.i("Rair", "(MainActivity.java:29)-connectComplete:->连接完成");
-            }
+        AndMqtt.getInstance().connect(new MqttConnect().setClientId("android")
+                .setPort(1884).setAutoReconnect(true)
+                .setCleanSession(true).setServer("tcp://119.3.27.191")
+                .setTraceCallback(new MqttTraceHandler() {
+                    @Override
+                    public void traceDebug(String tag, String message) {
 
-            @Override
-            public void connectionLost(Throwable cause) {
-                Log.i("Rair", "(MainActivity.java:34)-connectionLost:->连接丢失");
-            }
+                    }
 
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Log.i("Rair", "(MainActivity.java:39)-messageArrived:->收到的消息");
-            }
+                    @Override
+                    public void traceError(String tag, String message) {
 
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                Log.i("Rair", "(MainActivity.java:44)-deliveryComplete:->消息已送达");
-            }
-        }).connect(new MqttConnect().setClientId("android")
-                .setPort(1884)
-                .setAutoReconnect(true)
-                .setCleanSession(true)
-                .setServer("tcp://119.3.27.191"), new IMqttActionListener() {
+                    }
+
+                    @Override
+                    public void traceException(String tag, String message, Exception e) {
+
+                    }
+                }).setMessageListener(new MqttCallbackExtended() {
+                    @Override
+                    public void connectComplete(boolean reconnect, String serverURI) {
+
+                    }
+
+                    @Override
+                    public void connectionLost(Throwable cause) {
+
+                    }
+
+                    @Override
+                    public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                    }
+
+                    @Override
+                    public void deliveryComplete(IMqttDeliveryToken token) {
+
+                    }
+                }), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.i("Rair", "(MainActivity.java:51)-onSuccess:->连接成功");

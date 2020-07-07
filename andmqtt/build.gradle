@@ -6,20 +6,19 @@ def siteUrl = 'https://github.com/Rairmmd/AndMqtt'
 def gitUrl = 'https://github.com/Rairmmd/AndMqtt.git'
 
 group = "com.rairmmd"
-version = "1.0.9"       //这个是版本号，必须填写
+version = "1.0.9"
 
 android {
 
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 30
     }
     lintOptions {
         abortOnError false
     }
-
 }
 
 repositories {
@@ -42,7 +41,6 @@ install {
                 name 'AndMqtt'
                 description 'MQTT Client for Android'
                 url siteUrl
-                //开源协议
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
@@ -52,11 +50,8 @@ install {
                 developers {
                     developer {
                         id 'rairmmd'
-                        // #CONFIG# // your user id (you can write your nickname)
                         name 'rairmmd'
-                        // #CONFIG# // your user name
                         email 'rairmmd@gmail.com'
-                        // #CONFIG# // your email
                     }
                 }
                 scm {
@@ -95,11 +90,8 @@ bintray {
     key = properties.getProperty("bintray.apikey")
     configurations = ['archives']
     pkg {
-        //仓库
         repo = "maven"
-        //仓库名
         name = "AndMqtt"
-        // #CONFIG# project name in jcenter
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
