@@ -27,7 +27,6 @@ public class MqttUnSubscribe implements IMqtt {
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        AndMqtt.getInstance().getMqttConnect().getClient()
-                .unsubscribe(mTopic, null, listener);
+        AndMqtt.getInstance().getMqttClient().unsubscribe(mTopic, null, listener);
     }
 }

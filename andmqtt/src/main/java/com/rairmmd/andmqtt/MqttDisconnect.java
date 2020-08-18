@@ -27,7 +27,6 @@ public class MqttDisconnect implements IMqtt {
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        AndMqtt.getInstance().getMqttConnect().getClient()
-                .disconnect(mQuiesceTimeout, null, listener);
+        AndMqtt.getInstance().getMqttClient().disconnect(mQuiesceTimeout, null, listener);
     }
 }

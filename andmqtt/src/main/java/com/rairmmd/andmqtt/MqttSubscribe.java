@@ -41,7 +41,6 @@ public class MqttSubscribe implements IMqtt {
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        AndMqtt.getInstance().getMqttConnect().getClient()
-                .subscribe(mTopic, mQos, null, listener);
+        AndMqtt.getInstance().getMqttClient().subscribe(mTopic, mQos, null, listener);
     }
 }

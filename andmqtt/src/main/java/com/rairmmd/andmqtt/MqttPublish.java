@@ -65,7 +65,6 @@ public class MqttPublish implements IMqtt {
 
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
-        AndMqtt.getInstance().getMqttConnect().getClient()
-                .publish(mTopic, mMsg.getBytes(), mQos, mRetained, null, listener);
+        AndMqtt.getInstance().getMqttClient().publish(mTopic, mMsg.getBytes(), mQos, mRetained, null, listener);
     }
 }

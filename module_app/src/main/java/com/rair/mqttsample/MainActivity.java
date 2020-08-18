@@ -1,7 +1,7 @@
 package com.rair.mqttsample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.rairmmd.andmqtt.AndMqtt;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AndMqtt.getInstance().init(this);
+        AndMqtt.init(this);
         AndMqtt.getInstance().connect(new MqttConnect().setClientId("android")
                 .setPort(1884).setAutoReconnect(true)
                 .setCleanSession(true).setServer("tcp://119.3.27.191")
@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private void subscribe() {
         //订阅
         AndMqtt.getInstance().subscribe(new MqttSubscribe()
-                .setTopic("主题")
-                .setQos(0), new IMqttActionListener() {
+                .setTopic("主题").setQos(0), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.i("Rair", "(MainActivity.java:63)-onSuccess:->订阅成功");
@@ -95,9 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         //发布
         AndMqtt.getInstance().publish(new MqttPublish()
-                .setMsg("消息")
-                .setQos(0)
-                .setTopic("主题"), new IMqttActionListener() {
+                .setMsg("消息").setQos(0).setTopic("主题"), new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.i("Rair", "(MainActivity.java:79)-onSuccess:->发布成功");

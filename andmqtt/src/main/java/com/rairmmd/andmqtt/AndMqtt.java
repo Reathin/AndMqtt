@@ -9,6 +9,8 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.util.Objects;
+
 
 /**
  * @author Rair
@@ -20,27 +22,19 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 public class AndMqtt {
 
     private static final String TAG = "AndMqtt";
-
-    private static AndMqtt instance;
-    private Context mContext;
+    private static Context mContext;
     private MqttConnect mMqttConnect;
-    private MqttCallbackExtended mMessageListener;
-    private MqttTraceHandler mTraceListener;
-    private boolean mTraceEnable;
 
     private AndMqtt() {
 
     }
 
+    private static class AndMqttHolder {
+        private static AndMqtt instance = new AndMqtt();
+    }
+
     public static AndMqtt getInstance() {
-        if (instance == null) {
-            synchronized (AndMqtt.class) {
-                if (instance == null) {
-                    instance = new AndMqtt();
-                }
-            }
-        }
-        return instance;
+        return AndMqttHolder.instance;
     }
 
     /**
@@ -48,42 +42,8 @@ public class AndMqtt {
      *
      * @param context mContext
      */
-    public void init(Context context) {
-        this.mContext = context;
-    }
-
-    /**
-     * 接受消息监听
-     *
-     * @param listener MqttCallbackExtended
-     */
-    public AndMqtt setMessageListener(MqttCallbackExtended listener) {
-        this.mMessageListener = listener;
-        return this;
-    }
-
-    /**
-     * 日志监听
-     *
-     * @param mTraceListener MqttTraceHandler
-     *                       需先调用 setTraceEnable() 打开
-     * @return AndMqtt
-     */
-    public AndMqtt setTraceListener(MqttTraceHandler mTraceListener) {
-        this.mTraceListener = mTraceListener;
-        return this;
-    }
-
-    /**
-     * 日志开关
-     *
-     * @param mTraceEnable 开关
-     * @return AndMqtt
-     */
-    public AndMqtt setTraceEnable(boolean mTraceEnable) {
-        this.mTraceEnable = mTraceEnable;
-        mMqttConnect.setTraceEnabled(mTraceEnable);
-        return this;
+    public static void init(Context context) {
+        mContext = context;
     }
 
     /**
@@ -99,15 +59,6 @@ public class AndMqtt {
     }
 
     /**
-     * 获取连接对象
-     *
-     * @return MqttConnect
-     */
-    public MqttConnect getMqttConnect() {
-        return mMqttConnect;
-    }
-
-    /**
      * 连接服务器
      *
      * @param builder  服务器连接MqttConnect
@@ -115,13 +66,6 @@ public class AndMqtt {
      */
     public void connect(MqttConnect builder, IMqttActionListener listener) {
         mMqttConnect = builder;
-        if (mMessageListener != null) {
-            builder.setMessageListener(mMessageListener);
-        }
-        if (mTraceListener != null) {
-            builder.setTraceCallback(mTraceListener);
-        }
-        builder.setTraceEnabled(mTraceEnable);
         try {
             builder.execute(listener);
         } catch (MqttException e) {

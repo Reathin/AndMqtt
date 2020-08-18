@@ -27,7 +27,7 @@ import javax.net.ssl.SSLSocketFactory;
 public class MqttConnect implements IMqtt {
 
     private final String TAG = "AndMqtt";
-    private Context mContext;
+
     private String mClientId;
     private String mServer;
     private int mPort;
@@ -50,7 +50,6 @@ public class MqttConnect implements IMqtt {
     private MqttTraceHandler mTraceCallback;
 
     public MqttConnect() {
-        mContext = AndMqtt.getInstance().getContext();
     }
 
     /**
@@ -193,13 +192,16 @@ public class MqttConnect implements IMqtt {
         return this;
     }
 
+
     /**
-     * 相关日志回调
+     * 日志监听
      *
-     * @param traceCallback 回调
+     * @param traceCallback MqttTraceHandler
+     *                      需先调用 setTraceEnable() 打开
      * @return MqttConnect
      */
     public MqttConnect setTraceCallback(MqttTraceHandler traceCallback) {
+        setTraceEnabled(true);
         this.mTraceCallback = traceCallback;
         return this;
     }
@@ -213,7 +215,6 @@ public class MqttConnect implements IMqtt {
      * @param lastWillTopic    主题
      * @param lastWillQos      服务质量
      * @param lastWillRetained 设置是否在服务器中保存消息体
-     * @return
      */
     public MqttConnect setLastWill(String lastWillMsg, String lastWillTopic, int lastWillQos, boolean lastWillRetained) {
         this.lastWillMsg = lastWillMsg;
@@ -224,9 +225,9 @@ public class MqttConnect implements IMqtt {
     }
 
     /**
-     * 设置消息回调监听
+     * 接受消息监听
      *
-     * @param listener 监听
+     * @param listener MqttCallbackExtended
      */
     public MqttConnect setMessageListener(MqttCallbackExtended listener) {
         this.mMessageListener = listener;
@@ -245,9 +246,10 @@ public class MqttConnect implements IMqtt {
     @Override
     public void execute(IMqttActionListener listener) throws MqttException {
         //拼接服务器地址
+        Context context = AndMqtt.getInstance().getContext();
         String uri = mServer.concat(":").concat(String.valueOf(mPort));
         if (mClient == null) {
-            mClient = new MqttAndroidClient(mContext, uri, mClientId);
+            mClient = new MqttAndroidClient(context, uri, mClientId);
         }
         mClient.setCallback(mMessageListener);
         MqttConnectOptions connectOptions = new MqttConnectOptions();
@@ -258,7 +260,7 @@ public class MqttConnect implements IMqtt {
         mClient.connect(connectOptions);
         if (mSslKeyRawId != 0) {
             try {
-                InputStream key = mContext.getResources().openRawResource(mSslKeyRawId);
+                InputStream key = context.getResources().openRawResource(mSslKeyRawId);
                 connectOptions.setSocketFactory(mClient.getSSLSocketFactory(key, mSslKeyPassword));
             } catch (MqttSecurityException e) {
                 Log.e(TAG, e.getMessage());
