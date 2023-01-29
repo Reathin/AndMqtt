@@ -18,11 +18,11 @@ public class MqttSubscribe implements IMqtt {
     /**
      * 设置主题
      *
-     * @param mTopic 主题
+     * @param topic 主题
      * @return MqttSubscribe
      */
-    public MqttSubscribe setTopic(String mTopic) {
-        this.mTopic = mTopic;
+    public MqttSubscribe setTopic(String topic) {
+        this.mTopic = topic;
         return this;
     }
 
@@ -31,11 +31,11 @@ public class MqttSubscribe implements IMqtt {
      * QoS=1：至少一次，有可能重复。
      * QoS=2：只有一次，确保消息只到达一次。
      *
-     * @param mQos 服务质量
+     * @param qos 服务质量
      * @return MqttSubscribe
      */
-    public MqttSubscribe setQos(int mQos) {
-        this.mQos = mQos;
+    public MqttSubscribe setQos(int qos) {
+        this.mQos = qos;
         return this;
     }
 

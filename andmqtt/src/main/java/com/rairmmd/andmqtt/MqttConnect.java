@@ -26,7 +26,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class MqttConnect implements IMqtt {
 
-    private final String TAG = "AndMqtt";
+    private final String TAG = MqttConnect.class.getSimpleName();
 
     private String mClientId;
     private String mServer;
@@ -53,46 +53,46 @@ public class MqttConnect implements IMqtt {
     }
 
     /**
-     * 设置clientId
+     * 设置ClientId
      *
-     * @param mClientId clientId 设备唯一表示
+     * @param clientId clientId 设备唯一表示
      * @return MqttConnect
      */
-    public MqttConnect setClientId(String mClientId) {
-        this.mClientId = mClientId;
+    public MqttConnect setClientId(String clientId) {
+        this.mClientId = clientId;
         return this;
     }
 
     /**
      * 设置服务器地址
      *
-     * @param mServer 服务器地址 ：  tcp://111.111.111.111
+     * @param server 服务器地址 ：  tcp://111.111.111.111
      * @return MqttConnect
      */
-    public MqttConnect setServer(String mServer) {
-        this.mServer = mServer;
+    public MqttConnect setServer(String server) {
+        this.mServer = server;
         return this;
     }
 
     /**
      * 设置端口
      *
-     * @param mPort 端口号
+     * @param port 端口号
      * @return MqttConnect
      */
-    public MqttConnect setPort(int mPort) {
-        this.mPort = mPort;
+    public MqttConnect setPort(int port) {
+        this.mPort = port;
         return this;
     }
 
     /**
      * 设置超时时间
      *
-     * @param mTimeout 超时时间
+     * @param timeout 超时时间
      * @return MqttConnect
      */
-    public MqttConnect setTimeout(int mTimeout) {
-        this.mTimeout = mTimeout;
+    public MqttConnect setTimeout(int timeout) {
+        this.mTimeout = timeout;
         return this;
     }
 
@@ -149,35 +149,35 @@ public class MqttConnect implements IMqtt {
     /**
      * 设置ssl
      *
-     * @param mSslKeyRawId   ssl key RawId
+     * @param sslKeyRawId    ssl key RawId
      * @param sslKeyPassword 密码
      * @return MqttConnect
      */
-    public MqttConnect setSsl(int mSslKeyRawId, String sslKeyPassword) {
-        this.mSslKeyRawId = mSslKeyRawId;
+    public MqttConnect setSsl(int sslKeyRawId, String sslKeyPassword) {
+        this.mSslKeyRawId = sslKeyRawId;
         this.mSslKeyPassword = sslKeyPassword;
         return this;
     }
 
     /**
-     * 自定义SslSocketFactoryl
+     * 自定义SslSocketFactory
      *
-     * @param mSslSocketFactory mSslSocketFactory
+     * @param sslSocketFactory mSslSocketFactory
      * @return MqttConnect
      */
-    public MqttConnect setSslSocketFactory(SSLSocketFactory mSslSocketFactory) {
-        this.mSslSocketFactory = mSslSocketFactory;
+    public MqttConnect setSslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        this.mSslSocketFactory = sslSocketFactory;
         return this;
     }
 
     /**
      * 是否自动重连
      *
-     * @param mAutoReconnect 是否自动重连
+     * @param autoReconnect 是否自动重连
      * @return MqttConnect
      */
-    public MqttConnect setAutoReconnect(boolean mAutoReconnect) {
-        this.mAutoReconnect = mAutoReconnect;
+    public MqttConnect setAutoReconnect(boolean autoReconnect) {
+        this.mAutoReconnect = autoReconnect;
         return this;
     }
 
@@ -285,7 +285,7 @@ public class MqttConnect implements IMqtt {
             }
         }
         if (traceEnabled) {
-            mClient.setTraceEnabled(traceEnabled);
+            mClient.setTraceEnabled(true);
             mClient.setTraceCallback(mTraceCallback);
         }
         if (isConnect) {

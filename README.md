@@ -5,6 +5,7 @@ android mqttclient
 在项目级别build.gradle添加：
 ```
 maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
+maven { url "https://jitpack.io" }
 ```
 在module级别build.gradle添加：
 ```

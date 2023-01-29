@@ -1,22 +1,15 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-def siteUrl = 'https://github.com/Rairmmd/AndMqtt'
-def gitUrl = 'https://github.com/Rairmmd/AndMqtt.git'
-
-group = "com.rairmmd"
-version = "1.1.0"
 
 android {
 
     compileSdkVersion 30
+    namespace 'com.rairmmd.andmqtt'
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 30
     }
-    lintOptions {
+    lint {
         abortOnError false
     }
 }
@@ -33,36 +26,6 @@ dependencies {
     api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                name 'AndMqtt'
-                description 'MQTT Client for Android'
-                url siteUrl
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'rairmmd'
-                        name 'rairmmd'
-                        email 'rairmmd@gmail.com'
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
-        }
-    }
-}
 //配置源码
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -81,20 +44,4 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
-}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        name = "AndMqtt"
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
 }

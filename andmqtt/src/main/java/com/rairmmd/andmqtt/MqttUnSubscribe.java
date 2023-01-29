@@ -17,11 +17,11 @@ public class MqttUnSubscribe implements IMqtt {
     /**
      * 设置主题
      *
-     * @param mTopic 主题
+     * @param topic 主题
      * @return MqttUnSubscribe
      */
-    public MqttUnSubscribe setTopic(String mTopic) {
-        this.mTopic = mTopic;
+    public MqttUnSubscribe setTopic(String topic) {
+        this.mTopic = topic;
         return this;
     }
 

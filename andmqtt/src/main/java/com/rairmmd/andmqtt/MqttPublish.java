@@ -20,11 +20,11 @@ public class MqttPublish implements IMqtt {
     /**
      * 设置主题
      *
-     * @param mTopic 主题
+     * @param topic 主题
      * @return MqttPublish
      */
-    public MqttPublish setTopic(String mTopic) {
-        this.mTopic = mTopic;
+    public MqttPublish setTopic(String topic) {
+        this.mTopic = topic;
         return this;
     }
 
@@ -33,33 +33,33 @@ public class MqttPublish implements IMqtt {
      * QoS=1：至少一次，有可能重复。
      * QoS=2：只有一次，确保消息只到达一次。
      *
-     * @param mQos 服务质量
+     * @param qos 服务质量
      * @return MqttPublish
      */
-    public MqttPublish setQos(int mQos) {
-        this.mQos = mQos;
+    public MqttPublish setQos(int qos) {
+        this.mQos = qos;
         return this;
     }
 
     /**
      * 设置消息
      *
-     * @param mMsg 消息
+     * @param msg 消息
      * @return MqttPublish
      */
-    public MqttPublish setMsg(String mMsg) {
-        this.mMsg = mMsg;
+    public MqttPublish setMsg(String msg) {
+        this.mMsg = msg;
         return this;
     }
 
     /**
      * 设置是否在服务器中保存消息体
      *
-     * @param mRetained boolean
+     * @param retained boolean
      * @return MqttPublish
      */
-    public MqttPublish setRetained(boolean mRetained) {
-        this.mRetained = mRetained;
+    public MqttPublish setRetained(boolean retained) {
+        this.mRetained = retained;
         return this;
     }
 

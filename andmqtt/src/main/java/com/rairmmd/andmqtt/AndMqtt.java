@@ -1,5 +1,6 @@
 package com.rairmmd.andmqtt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -21,20 +22,29 @@ import java.util.Objects;
 
 public class AndMqtt {
 
-    private static final String TAG = "AndMqtt";
+    private static final String TAG = AndMqtt.class.getSimpleName();
+
+    @SuppressLint("StaticFieldLeak")
+    private static volatile AndMqtt sInstance;
+
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
+
     private MqttConnect mMqttConnect;
 
     private AndMqtt() {
 
     }
 
-    private static class AndMqttHolder {
-        private static AndMqtt instance = new AndMqtt();
-    }
-
     public static AndMqtt getInstance() {
-        return AndMqttHolder.instance;
+        if (sInstance == null) {
+            synchronized (AndMqtt.class) {
+                if (sInstance == null) {
+                    sInstance = new AndMqtt();
+                }
+            }
+        }
+        return sInstance;
     }
 
     /**
@@ -53,7 +63,7 @@ public class AndMqtt {
      */
     public Context getContext() {
         if (mContext == null) {
-            throw new IllegalArgumentException("Context is null,you need To initialize the AndMqtt first!");
+            throw new IllegalArgumentException("Context is null,you need to initialize the AndMqtt first!");
         }
         return mContext;
     }
