@@ -9,7 +9,7 @@ maven { url "https://jitpack.io" }
 ```
 在module级别build.gradle添加：
 ```
-implementation 'com.github.Rairmmd:AndMqtt:1.1.1'
+implementation 'com.github.Rairmmd:AndMqtt:1.0.5'
 implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
 implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 ```
