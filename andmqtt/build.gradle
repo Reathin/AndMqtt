@@ -3,12 +3,12 @@ apply plugin: 'maven-publish'
 
 android {
 
-    compileSdkVersion 30
+    compileSdkVersion 31
     namespace 'com.rairmmd.andmqtt'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 30
+        targetSdkVersion 31
     }
     lint {
         abortOnError false
