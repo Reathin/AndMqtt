@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
 
-    compileSdkVersion 34
+    compileSdk 34
     namespace 'com.reathin.andmqtt'
 
     defaultConfig {
@@ -25,4 +26,17 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
     api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.reathin.android'
+                artifactId = 'andmqtt'
+                version = '1.0.6'
+                description 'mqtt client for android'
+            }
+        }
+    }
 }
