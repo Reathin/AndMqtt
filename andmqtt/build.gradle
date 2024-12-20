@@ -1,14 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
 
 android {
 
-    compileSdkVersion 31
-    namespace 'com.rairmmd.andmqtt'
+    compileSdkVersion 34
+    namespace 'com.reathin.andmqtt'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 31
+        targetSdkVersion 34
     }
     lint {
         abortOnError false
@@ -18,40 +17,12 @@ android {
 repositories {
     google()
     jcenter()
+    mavenCentral()
     maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
 }
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    api 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
     api 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-}
-
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives androidSourcesJar
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = "com.rairmmd.android"
-                artifactId = "andmqtt"
-                version = "1.1.1"
-                description 'mqtt for android'
-                artifact androidSourcesJar
-            }
-        }
-    }
 }

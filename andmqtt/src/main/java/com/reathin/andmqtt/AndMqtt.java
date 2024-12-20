@@ -1,16 +1,12 @@
-package com.rairmmd.andmqtt;
+package com.reathin.andmqtt;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.android.service.MqttTraceHandler;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttException;
-
-import java.util.Objects;
 
 
 /**
@@ -48,22 +44,13 @@ public class AndMqtt {
     }
 
     /**
-     * 初始化
-     *
-     * @param context mContext
-     */
-    public static void init(Context context) {
-        mContext = context;
-    }
-
-    /**
      * 获取context
      *
      * @return context
      */
     public Context getContext() {
         if (mContext == null) {
-            throw new IllegalArgumentException("Context is null,you need to initialize the AndMqtt first!");
+            mContext = AndMqttProvider.context;
         }
         return mContext;
     }

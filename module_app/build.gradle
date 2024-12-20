@@ -2,8 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 32
+    namespace 'com.reathin.mqttsample'
+
     defaultConfig {
-        applicationId "com.rair.mqttsample"
+        applicationId "com.reathin.mqttsample"
         minSdkVersion 19
         targetSdkVersion 32
         versionCode 1
@@ -15,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.rair.mqttsample'
 }
 
 dependencies {
